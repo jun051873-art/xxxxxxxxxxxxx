@@ -1,33 +1,122 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="apple-mobile-web-app-capable" content="yes"><title>剪髮快手 V0.7</title><style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%;overflow:hidden;background:#281b16;font-family:-apple-system,"PingFang TC",sans-serif;touch-action:none}button{font:inherit}#app{position:fixed;inset:0;background:linear-gradient(#2b1d17 0 7%,#ead7c3 7%)}.top{position:absolute;z-index:30;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px}.pill{border:0;border-radius:99px;padding:9px 13px;background:#45362e;color:#fff;font-weight:800;font-size:13px}.stage{position:absolute;top:62px;bottom:118px;left:12px;right:12px;border:7px solid #795741;border-radius:28px;background:radial-gradient(circle at 50% 12%,#fff9f0,#e6ceb6 65%,#d0ae91);overflow:hidden;touch-action:none}.mission{position:absolute;z-index:12;top:12px;left:7%;right:7%;background:#fff;border-radius:18px;padding:10px 12px;text-align:center;font-weight:800;box-shadow:0 7px 18px #0002}.mission small{display:block;color:#7b6658;margin-top:2px}.person{position:absolute;left:50%;top:92px;transform:translateX(-50%);width:310px;height:510px}.head{position:absolute;z-index:3;left:50%;top:105px;transform:translateX(-50%);width:174px;height:202px;border-radius:48% 48% 52% 52%;background:#efc09e;border:2px solid #be8c6d}.eye{position:absolute;top:80px;width:18px;height:9px;background:#38251f;border-radius:50%;transition:.12s}.eye.l{left:43px}.eye.r{right:43px}.brow{position:absolute;top:63px;width:40px;height:5px;background:#493129;border-radius:99px;transition:.16s}.brow.l{left:27px}.brow.r{right:27px}.mouth{position:absolute;left:50%;top:133px;transform:translateX(-50%);width:45px;height:18px;border-bottom:5px solid #a45f56;border-radius:50%;transition:.15s}.head.blink .eye{height:2px;top:84px}.head.tense .brow.l{transform:rotate(18deg)}.head.tense .brow.r{transform:rotate(-18deg)}.head.tense .mouth{width:28px;border-radius:10%;border-bottom:3px solid #8f5650}.head.shock .eye{height:18px;border-radius:50%}.head.shock .brow.l{transform:translateY(-8px) rotate(-12deg)}.head.shock .brow.r{transform:translateY(-8px) rotate(12deg)}.head.shock .mouth{width:22px;height:22px;border:4px solid #a45f56;border-radius:50%}.head.happy .eye{height:3px;top:84px}.head.happy .mouth{width:52px;height:25px;border-bottom-width:6px}.cape{position:absolute;z-index:2;top:286px;left:50%;transform:translateX(-50%);width:292px;height:225px;border-radius:48% 48% 12% 12%;background:linear-gradient(#faf7f1,#ddd8d0);text-align:center;padding-top:82px;color:#9b7357;font-size:28px;font-weight:900}canvas{position:absolute;z-index:5;left:50%;top:38px;transform:translateX(-50%);width:278px;height:278px;touch-action:none}#fx{z-index:6;pointer-events:none}.cursor{position:absolute;z-index:14;display:none;font-size:48px;pointer-events:none;transform:translate(-50%,-50%);transform-origin:center}.cursor.snip{animation:snip .18s steps(2,end) infinite}@keyframes snip{0%{transform:translate(-50%,-50%) rotate(-20deg) scale(.95)}100%{transform:translate(-50%,-50%) rotate(5deg) scale(1.05)}}.tools{position:absolute;z-index:40;bottom:8px;left:8px;right:8px;height:98px;background:#fffaf5;border-radius:22px;padding:7px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;box-shadow:0 -3px 15px #0002}.tool{border:2px solid transparent;border-radius:15px;background:#eee8e1;font-size:11px;font-weight:800}.tool b{display:block;font-size:25px}.tool.on{border-color:#ad744a;background:#f4dec5}.reset{background:#45362e;color:#fff}.picker{display:none;position:absolute;z-index:60;inset:64px 10px 116px;background:#fffaf5;border-radius:24px;padding:12px;overflow:auto;touch-action:pan-y}.picker.show{display:block}.ph{display:flex;justify-content:space-between;align-items:center}.ph h2{font-size:17px}.close{width:40px;height:40px;border:0;border-radius:50%;background:#45362e;color:#fff;font-size:20px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.card{min-height:116px;border:2px solid transparent;border-radius:17px;background:#eee8e1;font-size:12px;font-weight:800;padding:8px}.card.on{border-color:#ad744a;background:#f7e3cd}.preview{height:74px;position:relative}.preview .face{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:48px;height:55px;border-radius:48%;background:#efc09e}.preview .hair{position:absolute;left:50%;transform:translateX(-50%);background:#2d1a14}.p-short{top:4px;width:76px;height:50px;border-radius:52% 52% 35% 35%}.p-mid{top:2px;width:82px;height:67px;border-radius:50% 50% 28% 28%}.p-long{top:0;width:88px;height:74px;border-radius:50% 50% 20% 20%}.female .hair{background:#3a231c}.apply{position:sticky;bottom:4px;width:100%;margin-top:10px;border:0;border-radius:18px;padding:13px;background:#45362e;color:#fff;font-weight:900}.toast{position:absolute;z-index:70;left:50%;top:52%;transform:translate(-50%,-50%) scale(.85);background:#44352d;color:#fff;border-radius:999px;padding:10px 18px;font-weight:900;opacity:0;transition:.18s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}.done{position:absolute;z-index:80;inset:22% 8%;display:none;align-items:center;justify-content:center;text-align:center;background:#fffaf5;border-radius:28px;padding:22px;box-shadow:0 18px 40px #0003}.done.show{display:flex}.done h2{margin:4px 0 8px}.done button{border:0;border-radius:16px;background:#45362e;color:#fff;padding:12px 18px;font-weight:900}.stars{font-size:34px}.blow{position:absolute;z-index:7;width:95px;height:95px;border-radius:50%;pointer-events:none;display:none;background:radial-gradient(circle,rgba(255,255,255,.55),rgba(255,255,255,0) 70%)}
-</style></head><body><div id="app">
-<div class="top"><button id="choose" class="pill">💇 選髮型 · 男短</button><div class="pill">⭐ <span id="score">0</span></div></div>
-<div class="stage" id="stage"><div class="mission" id="mission">任務 01｜兩側修短，上面保留<small id="hint">先選電推，從兩側往上修。</small></div>
-<div class="person"><div class="head" id="head"><i class="brow l"></i><i class="brow r"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div><canvas id="hair" width="560" height="560"></canvas><canvas id="fx" width="560" height="560"></canvas><div class="cape">ES<div style="font-size:10px">HAIR SALON</div></div></div>
-<div class="cursor" id="cursor">🪒</div><div class="blow" id="blow"></div><div class="toast" id="toast">Nice!</div></div>
-<div class="tools"><button class="tool" data-t="scissors"><b>✂️</b>剪刀</button><button class="tool on" data-t="clipper"><b>🪒</b>電推</button><button class="tool" data-t="thin"><b>✂︎</b>打薄</button><button class="tool" data-t="dryer"><b>💨</b>吹風</button><button class="tool reset" id="reset"><b>↻</b>重來</button></div>
-<section class="picker" id="picker"><div class="ph"><h2>基礎髮型 · 6 款</h2><button class="close" id="close">×</button></div><div class="grid" id="grid"></div><button class="apply" id="apply">套用髮型並開始任務</button></section>
-<div class="done" id="done"><div><div class="stars">⭐⭐⭐</div><h2>任務完成！</h2><p>客人很滿意這次的修剪 ✨</p><button id="again">再挑戰一次</button></div></div>
-</div><script>
-const $=s=>document.querySelector(s),C=$('#hair'),X=C.getContext('2d'),F=$('#fx'),FX=F.getContext('2d'),stage=$('#stage'),head=$('#head'),cursor=$('#cursor'),picker=$('#picker'),grid=$('#grid'),toast=$('#toast'),blow=$('#blow');
-let tool='clipper',cur=0,drag=false,last=null,score=0,parts=[],ops=0,thinCount=0,blowCount=0,sideCuts=0,cutAxis='free';
-const styles=[['男生短髮','male','short'],['男生中髮','male','mid'],['男生長髮','male','long'],['女生短髮','female','short'],['女生中髮','female','mid'],['女生長髮','female','long']];
-function hairPath(type,gender){X.beginPath();if(type==='short'){X.moveTo(120,315);X.bezierCurveTo(95,140,160,58,280,58);X.bezierCurveTo(402,58,468,143,440,315);X.lineTo(390,275);X.bezierCurveTo(375,170,335,130,280,132);X.bezierCurveTo(220,130,180,168,165,275);X.closePath()}else if(type==='mid'){X.moveTo(85,420);X.bezierCurveTo(70,150,150,52,280,58);X.bezierCurveTo(420,58,488,170,470,420);X.lineTo(398,378);X.bezierCurveTo(400,205,350,132,280,130);X.bezierCurveTo(205,132,160,210,160,378);X.closePath()}else{X.moveTo(58,540);X.bezierCurveTo(45,175,145,48,280,58);X.bezierCurveTo(438,58,505,190,495,540);X.lineTo(405,495);X.bezierCurveTo(410,235,360,128,280,126);X.bezierCurveTo(195,128,148,235,145,495);X.closePath()}}
-function draw(){X.clearRect(0,0,560,560);let s=styles[cur],g=X.createLinearGradient(80,50,470,520);g.addColorStop(0,s[0].includes('女生')?'#59372b':'#4a2e24');g.addColorStop(.55,'#281712');g.addColorStop(1,'#120b09');hairPath(s[2],s[1]);X.fillStyle=g;X.fill();X.save();X.globalCompositeOperation='source-atop';X.strokeStyle='rgba(255,255,255,.10)';X.lineWidth=6;for(let x=92;x<475;x+=20){X.beginPath();for(let y=70;y<540;y+=12){let xx=x+Math.sin(y/52+x)*3;y===70?X.moveTo(xx,y):X.lineTo(xx,y)}X.stroke()}X.restore()}
-function reset(){draw();score=ops=thinCount=blowCount=sideCuts=0;$('#score').textContent=0;$('#done').classList.remove('show');$('#mission').firstChild.nodeValue='任務 01｜兩側修短，上面保留';$('#hint').textContent='先選電推，從兩側往上修。';face('normal')}
-function cards(){grid.innerHTML='';styles.forEach((s,i)=>{let b=document.createElement('button');b.className='card'+(i===cur?' on':'');b.innerHTML='<div class="preview '+s[1]+'"><div class="hair p-'+s[2]+'"></div><div class="face"></div></div><div>'+s[0]+'</div>';b.onclick=()=>{cur=i;draw();cards();$('#choose').textContent='💇 '+s[0]};grid.appendChild(b)})}
-function point(e){let r=C.getBoundingClientRect(),sr=stage.getBoundingClientRect();return{x:(e.clientX-r.left)*560/r.width,y:(e.clientY-r.top)*560/r.height,sx:e.clientX-sr.left,sy:e.clientY-sr.top}}
-function erase(q,r,a=1){X.save();X.globalCompositeOperation='destination-out';X.globalAlpha=a;let g=X.createRadialGradient(q.x,q.y,0,q.x,q.y,r);g.addColorStop(0,'#000');g.addColorStop(.7,'rgba(0,0,0,.88)');g.addColorStop(1,'rgba(0,0,0,0)');X.fillStyle=g;X.beginPath();X.arc(q.x,q.y,r,0,7);X.fill();X.restore()}
-function clipLine(a,b){let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),n=Math.max(1,Math.ceil(d/8));for(let i=0;i<=n;i++){let q={x:a.x+dx*i/n,y:a.y+dy*i/n};if(tool==='clipper')erase(q,27,1);else if(tool==='thin')erase(q,31,.09);else if(tool==='scissors'){let vertical=Math.abs(dy)>Math.abs(dx);erase(q,vertical?12:19,vertical?.46:.82)}if(i%3===0)parts.push({x:q.x,y:q.y,vx:(Math.random()-.5)*2,vy:1+Math.random()*2,a:1})}}
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2b1d17">
+<title>剪髮快手 V0.8 精緻核心版</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#281b16;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;touch-action:none}
+button{font:inherit}
+#app{position:fixed;inset:0;background:linear-gradient(#2b1d17 0 7%,#ead7c3 7%);overflow:hidden}
+.top{position:absolute;z-index:40;top:max(10px,env(safe-area-inset-top));left:12px;right:12px;display:flex;gap:8px;justify-content:space-between}
+.pill{border:0;border-radius:999px;padding:9px 13px;background:#46372f;color:#fff;font-size:13px;font-weight:800;box-shadow:0 4px 12px #0002}
+.stage{position:absolute;top:64px;bottom:116px;left:10px;right:10px;overflow:hidden;border:7px solid #795741;border-radius:30px;background:radial-gradient(circle at 50% 10%,#fffaf3,#e6ceb5 62%,#cfac8f);touch-action:none}
+.mission{position:absolute;z-index:18;top:12px;left:6%;right:6%;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 7px 20px #0002;text-align:center;font-weight:900}
+.mission small{display:block;margin-top:3px;color:#7c685a;font-size:11px}
+.progress{display:flex;gap:5px;margin-top:8px}
+.progress i{height:5px;flex:1;border-radius:999px;background:#ddd1c7;overflow:hidden}
+.progress i b{display:block;width:0;height:100%;border-radius:999px;background:#9d714e;transition:width .2s}
+.person{position:absolute;left:50%;top:96px;transform:translateX(-50%);width:320px;height:510px}
+.head{position:absolute;z-index:3;left:50%;top:112px;transform:translateX(-50%);width:176px;height:202px;border:2px solid #be8c6d;border-radius:48% 48% 52% 52%;background:#efc09e}
+.brow,.eye,.mouth{position:absolute;transition:transform .13s,height .13s,width .13s,top .13s,border .13s}
+.brow{top:63px;width:39px;height:5px;border-radius:999px;background:#493129}.brow.l{left:27px}.brow.r{right:27px}
+.eye{top:81px;width:18px;height:9px;border-radius:50%;background:#38251f}.eye.l{left:43px}.eye.r{right:43px}
+.mouth{left:50%;top:134px;transform:translateX(-50%);width:44px;height:18px;border-bottom:5px solid #a45f56;border-radius:50%}
+.head.blink .eye{height:2px;top:85px}
+.head.focus .brow.l{transform:rotate(12deg)}.head.focus .brow.r{transform:rotate(-12deg)}.head.focus .mouth{width:30px;border-bottom-width:3px}
+.head.worry .brow.l{transform:translateY(-4px) rotate(21deg)}.head.worry .brow.r{transform:translateY(-4px) rotate(-21deg)}.head.worry .mouth{width:25px;height:14px;border-bottom:0;border-top:4px solid #a45f56;border-radius:50%}
+.head.shock .eye{height:19px}.head.shock .brow{top:52px}.head.shock .mouth{width:22px;height:22px;border:4px solid #a45f56;border-radius:50%}
+.head.happy .eye{height:3px;top:85px}.head.happy .mouth{width:54px;height:25px;border-bottom-width:6px}
+.cape{position:absolute;z-index:2;top:294px;left:50%;transform:translateX(-50%);width:295px;height:220px;padding-top:80px;border-radius:48% 48% 12% 12%;background:linear-gradient(#faf7f1,#ddd8d0);color:#9b7357;text-align:center;font-size:27px;font-weight:900}
+.cape small{display:block;font-size:9px;letter-spacing:1px}
+canvas{position:absolute;z-index:5;left:50%;top:42px;transform:translateX(-50%);width:286px;height:286px;touch-action:none}
+#fx{z-index:7;pointer-events:none}
+.cursor{position:absolute;z-index:20;display:none;pointer-events:none;font-size:52px;transform:translate(-50%,-50%) rotate(-10deg);filter:drop-shadow(0 4px 5px #0005)}
+.cursor.snip{animation:snip .16s steps(2,end) infinite}
+@keyframes snip{0%{transform:translate(-50%,-50%) rotate(-24deg) scale(.94)}100%{transform:translate(-50%,-50%) rotate(6deg) scale(1.05)}}
+.wind{position:absolute;z-index:8;display:none;width:120px;height:70px;pointer-events:none;opacity:.75;background:repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,255,255,.7) 11px 14px);mask-image:linear-gradient(90deg,#000,transparent);transform-origin:left center}
+.tools{position:absolute;z-index:45;left:8px;right:8px;bottom:max(7px,env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);gap:5px;height:98px;padding:7px;border-radius:22px;background:#fffaf5;box-shadow:0 -3px 16px #0002}
+.tool{min-width:0;border:2px solid transparent;border-radius:15px;background:#eee8e1;font-size:11px;font-weight:900}.tool b{display:block;font-size:25px}.tool.on{border-color:#ad744a;background:#f4dec5}.reset{background:#45362e;color:#fff}
+.toast{position:absolute;z-index:70;left:50%;top:51%;opacity:0;transform:translate(-50%,-50%) scale(.85);padding:10px 17px;border-radius:999px;background:#44352d;color:#fff;font-weight:900;transition:.16s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.done{position:absolute;z-index:90;inset:20% 7%;display:none;align-items:center;justify-content:center;padding:22px;border-radius:28px;background:#fffaf5;text-align:center;box-shadow:0 18px 45px #0004}.done.show{display:flex}.done .stars{font-size:35px}.done h2{margin:5px 0 8px}.done p{margin:5px 0;color:#725f52}.done button{margin-top:12px;border:0;border-radius:16px;padding:12px 18px;background:#45362e;color:#fff;font-weight:900}
+.badge{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:999px;background:#f0e3d6;font-size:12px;font-weight:800}
+@media(max-height:700px){.person{top:70px;transform:translateX(-50%) scale(.9);transform-origin:top center}.stage{bottom:105px}.tools{height:90px}.tool b{font-size:22px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top"><div class="pill">剪髮快手 · 精緻核心版</div><div class="pill">⭐ <span id="score">0</span></div></div>
+  <main class="stage" id="stage">
+    <section class="mission">
+      任務｜兩側修乾淨、頂部輕打薄、最後吹整
+      <small id="hint">先用電推把左右兩側修短。</small>
+      <div class="progress"><i><b id="p1"></b></i><i><b id="p2"></b></i><i><b id="p3"></b></i></div>
+    </section>
+    <div class="person">
+      <div class="head" id="head"><i class="brow l"></i><i class="brow r"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div>
+      <canvas id="hair" width="600" height="600"></canvas>
+      <canvas id="fx" width="600" height="600"></canvas>
+      <div class="cape">ES<small>HAIR SALON</small></div>
+    </div>
+    <div class="cursor" id="cursor">🪒</div><div class="wind" id="wind"></div><div class="toast" id="toast">Nice!</div>
+  </main>
+  <nav class="tools">
+    <button class="tool" data-tool="scissors"><b>✂️</b>剪刀</button>
+    <button class="tool on" data-tool="clipper"><b>🪒</b>電推</button>
+    <button class="tool" data-tool="thin"><b>✂︎</b>打薄</button>
+    <button class="tool" data-tool="dryer"><b>💨</b>吹風</button>
+    <button class="tool reset" id="reset"><b>↻</b>重來</button>
+  </nav>
+  <section class="done" id="done"><div><div class="stars" id="stars">⭐⭐⭐</div><h2 id="doneTitle">完成！</h2><p id="doneText">客人很滿意你的修剪。</p><span class="badge" id="badge">精準新手</span><br><button id="again">再剪一次</button></div></section>
+</div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),stage=$('#stage'),C=$('#hair'),X=C.getContext('2d'),F=$('#fx'),FX=F.getContext('2d'),head=$('#head'),cursor=$('#cursor'),wind=$('#wind');
+let tool='clipper',drag=false,last=null,score=0,particles=[],side=0,thin=0,blow=0,topDanger=0,lastFrame=0,pending=null;
+function baseHair(){
+ X.clearRect(0,0,600,600);
+ let g=X.createLinearGradient(90,55,490,500);g.addColorStop(0,'#5b3a2d');g.addColorStop(.52,'#2b1914');g.addColorStop(1,'#160c0a');
+ X.beginPath();X.moveTo(115,350);X.bezierCurveTo(90,155,165,60,300,60);X.bezierCurveTo(440,60,512,160,480,350);X.lineTo(420,300);X.bezierCurveTo(410,190,365,145,300,145);X.bezierCurveTo(230,145,188,195,178,300);X.closePath();X.fillStyle=g;X.fill();
+ X.save();X.globalCompositeOperation='source-atop';X.strokeStyle='rgba(255,255,255,.11)';X.lineWidth=7;
+ for(let x=112;x<492;x+=20){X.beginPath();for(let y=75;y<445;y+=10){let xx=x+Math.sin(y/52+x)*3;y===75?X.moveTo(xx,y):X.lineTo(xx,y)}X.stroke()}X.restore()
+}
+function reset(){baseHair();side=thin=blow=topDanger=score=0;$('#score').textContent=0;$('#p1').style.width=$('#p2').style.width=$('#p3').style.width='0';$('#hint').textContent='先用電推把左右兩側修短。';$('#done').classList.remove('show');face('normal')}
 function face(m){head.className='head'+(m==='normal'?'':' '+m)}
-function animate(){FX.clearRect(0,0,560,560);parts=parts.filter(p=>p.a>.02&&p.y<560);for(let p of parts){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.a*=.965;FX.globalAlpha=p.a;FX.strokeStyle='#281712';FX.lineWidth=3;FX.beginPath();FX.moveTo(p.x,p.y);FX.lineTo(p.x+3,p.y+12);FX.stroke()}FX.globalAlpha=1;requestAnimationFrame(animate)}animate();
-function flash(t){toast.textContent=t;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),420)}
-function finishCheck(){if(sideCuts>=2&&thinCount>=2&&blowCount>=2){score+=100;$('#score').textContent=score;face('happy');$('#mission').firstChild.nodeValue='完成！';$('#hint').textContent='漂亮，收尾完成。';setTimeout(()=>$('#done').classList.add('show'),450)}}
-function down(e){let q=point(e);if(q.x<30||q.x>530||q.y<25||q.y>545)return;drag=true;last=q;cursor.style.display='block';cursor.style.left=q.sx+'px';cursor.style.top=q.sy+'px';cursor.textContent={clipper:'🪒',scissors:'✂️',thin:'✂︎',dryer:'💨'}[tool];cursor.classList.toggle('snip',tool==='scissors');if(tool==='thin'){erase(q,32,.10);thinCount++;flash('喀嚓');face('tense')}if(tool==='dryer'){blow.style.display='block';blow.style.left=(q.sx-46)+'px';blow.style.top=(q.sy-46)+'px';face('happy')}try{stage.setPointerCapture(e.pointerId)}catch{}e.preventDefault()}
-function move(e){if(!drag)return;let q=point(e);cursor.style.left=q.sx+'px';cursor.style.top=q.sy+'px';if(tool==='dryer'){blow.style.left=(q.sx-46)+'px';blow.style.top=(q.sy-46)+'px';blowCount++;score++;$('#score').textContent=score}else{clipLine(last,q);if(tool==='clipper'&&q.y>185&&q.y<410&&(q.x<210||q.x>350)){sideCuts=Math.min(2,sideCuts+0.03)}if(tool==='thin'){thinCount+=.08}if(q.y<155){face('shock');$('#hint').textContent='小心！上面不要剪太高 😳'}else face('tense')}last=q;e.preventDefault()}
-function up(){if(!drag)return;drag=false;cursor.style.display='none';cursor.classList.remove('snip');blow.style.display='none';ops++;score+=8;$('#score').textContent=Math.round(score);if(tool==='clipper'&&sideCuts>=.9)$('#hint').textContent='兩側差不多了，試試打薄讓上面更自然。';if(tool==='thin'&&thinCount>=2)$('#hint').textContent='重量有變輕，最後用吹風整理。';face(tool==='dryer'?'happy':'normal');finishCheck()}
+function point(e){const r=C.getBoundingClientRect(),sr=stage.getBoundingClientRect();return{x:(e.clientX-r.left)*600/r.width,y:(e.clientY-r.top)*600/r.height,sx:e.clientX-sr.left,sy:e.clientY-sr.top}}
+function erase(p,r,a=1){X.save();X.globalCompositeOperation='destination-out';X.globalAlpha=a;const g=X.createRadialGradient(p.x,p.y,0,p.x,p.y,r);g.addColorStop(0,'rgba(0,0,0,1)');g.addColorStop(.68,'rgba(0,0,0,.86)');g.addColorStop(1,'rgba(0,0,0,0)');X.fillStyle=g;X.beginPath();X.arc(p.x,p.y,r,0,Math.PI*2);X.fill();X.restore()}
+function hairBits(p,n=1){for(let i=0;i<n;i++)particles.push({x:p.x+(Math.random()-.5)*12,y:p.y,vx:(Math.random()-.5)*2.4,vy:1+Math.random()*2.3,a:1,l:8+Math.random()*10})}
+function stroke(a,b){
+ const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy),n=Math.max(1,Math.ceil(d/6));
+ const vertical=Math.abs(dy)>Math.abs(dx)*1.25;
+ for(let i=0;i<=n;i++){
+  const p={x:a.x+dx*i/n,y:a.y+dy*i/n};
+  if(tool==='clipper'){erase(p,28,1); if((p.x<220||p.x>380)&&p.y>190&&p.y<415)side=Math.min(100,side+.38)}
+  if(tool==='scissors'){erase(p,vertical?12:22,vertical?.46:.88)}
+  if(tool==='thin'){erase(p,34,.055);if(p.y>110&&p.y<295&&p.x>175&&p.x<425)thin=Math.min(100,thin+.24)}
+  if(i%4===0)hairBits(p,tool==='clipper'?2:1);
+  if(p.y<145){topDanger++;face(topDanger>8?'shock':'worry')}
+ }
+ updateProgress()
+}
+function updateProgress(){
+ $('#p1').style.width=Math.min(100,side)+'%';$('#p2').style.width=Math.min(100,thin)+'%';$('#p3').style.width=Math.min(100,blow)+'%';
+ if(side>=60&&thin<45)$('#hint').textContent='兩側完成得不錯，換打薄剪輕輕減量。';
+ if(thin>=45&&blow<60)$('#hint').textContent='厚度剛好，最後用吹風把輪廓整理順。';
+ if(side>=60&&thin>=45&&blow>=60)complete()
+}
+function complete(){if($('#done').classList.contains('show'))return;face('happy');score+=200;$('#score').textContent=Math.round(score);let rating=topDanger>12?2:3;$('#stars').textContent=rating===3?'⭐⭐⭐':'⭐⭐☆';$('#doneTitle').textContent=rating===3?'漂亮完成！':'完成了！';$('#doneText').textContent=rating===3?'客人很滿意，線條乾淨又自然。':'有一點剪太高，但整體完成得不錯。';$('#badge').textContent=rating===3?'俐落手感 +200':'驚險過關 +120';setTimeout(()=>$('#done').classList.add('show'),350)}
+function flash(t){const z=$('#toast');z.textContent=t;z.classList.add('show');setTimeout(()=>z.classList.remove('show'),330)}
+function down(e){let p=point(e);if(p.x<30||p.x>570||p.y<25||p.y>575)return;drag=true;last=p;cursor.style.display='block';cursor.style.left=p.sx+'px';cursor.style.top=p.sy+'px';cursor.textContent={clipper:'🪒',scissors:'✂️',thin:'✂︎',dryer:'💨'}[tool];cursor.classList.toggle('snip',tool==='scissors');if(tool==='thin'){erase(p,34,.065);thin=Math.min(100,thin+1.7);hairBits(p,2);flash('喀嚓');face('focus');updateProgress()}if(tool==='dryer'){wind.style.display='block';face('happy')}try{stage.setPointerCapture(e.pointerId)}catch{}e.preventDefault()}
+function move(e){if(!drag)return;let p=point(e);cursor.style.left=p.sx+'px';cursor.style.top=p.sy+'px';if(tool==='dryer'){let ang=Math.atan2(p.y-last.y,p.x-last.x)*180/Math.PI;wind.style.left=(p.sx-8)+'px';wind.style.top=(p.sy-35)+'px';wind.style.transform='rotate('+ang+'deg)';blow=Math.min(100,blow+1.15);score+=.12;face('happy');updateProgress()}else{pending={a:last,b:p};if(!lastFrame){lastFrame=requestAnimationFrame(()=>{if(pending)stroke(pending.a,pending.b);pending=null;lastFrame=0})}face(p.y<150?(topDanger>8?'shock':'worry'):'focus')}last=p;e.preventDefault()}
+function up(){if(!drag)return;drag=false;cursor.style.display='none';cursor.classList.remove('snip');wind.style.display='none';score+=8;$('#score').textContent=Math.round(score);if(side>=60&&tool==='clipper')flash('兩側很乾淨 ✨');if(thin>=45&&tool==='thin')flash('厚度剛好');face(tool==='dryer'?'happy':'normal');updateProgress()}
 stage.addEventListener('pointerdown',down,{passive:false});stage.addEventListener('pointermove',move,{passive:false});stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
-document.querySelectorAll('.tool[data-t]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tool[data-t]').forEach(x=>x.classList.remove('on'));b.classList.add('on');tool=b.dataset.t;$('#hint').textContent=tool==='clipper'?'電推：滑過就俐落削短。':tool==='scissors'?'剪刀：橫剪較平，直剪較碎。':tool==='thin'?'打薄：點一下或來回滑，頭髮會慢慢變少。':'吹風：沿著頭髮滑動做最後整理。'});
-$('#reset').onclick=reset;$('#choose').onclick=()=>{cards();picker.classList.add('show')};$('#close').onclick=()=>picker.classList.remove('show');$('#apply').onclick=()=>{picker.classList.remove('show');reset();$('#hint').textContent='任務開始：先把兩側修短。'};$('#again').onclick=reset;
-setInterval(()=>{if(!drag){head.classList.add('blink');setTimeout(()=>head.classList.remove('blink'),130)}},3200);draw();cards();
-</script></body></html>
+document.querySelectorAll('.tool[data-tool]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tool[data-tool]').forEach(x=>x.classList.remove('on'));b.classList.add('on');tool=b.dataset.tool;$('#hint').textContent=tool==='clipper'?'電推：滑哪裡就俐落削哪裡。':tool==='scissors'?'剪刀：橫剪較平，直剪會比較碎、比較慢。':tool==='thin'?'打薄：點一下或慢慢滑，髮量會逐步變少。':'吹風：沿著髮流滑動做最後整理。'}));
+$('#reset').onclick=reset;$('#again').onclick=reset;
+setInterval(()=>{if(!drag){head.classList.add('blink');setTimeout(()=>head.classList.remove('blink'),120)}},3100);
+function anim(){FX.clearRect(0,0,600,600);particles=particles.filter(p=>p.a>.02&&p.y<600);for(const p of particles){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.a*=.965;FX.globalAlpha=p.a;FX.strokeStyle='#281712';FX.lineWidth=3;FX.beginPath();FX.moveTo(p.x,p.y);FX.lineTo(p.x+3,p.y+p.l);FX.stroke()}FX.globalAlpha=1;requestAnimationFrame(anim)}anim();reset();
+})();
+</script>
+</body></html>

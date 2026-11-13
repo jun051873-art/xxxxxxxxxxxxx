@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#2b1d17">
-<title>剪髮快手 V1.1 雙手精修核心</title>
+<title>剪髮快手 V1.2 超細修剪刀</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
 html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#281b16;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;touch-action:none}
 button{font:inherit}#app{position:fixed;inset:0;overflow:hidden;background:linear-gradient(#2b1d17 0 7%,#ead8c6 7%)}
 .top{position:absolute;z-index:50;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;display:flex;justify-content:space-between;gap:7px}.pill{border:0;border-radius:999px;padding:8px 11px;background:#46372f;color:#fff;font-size:12px;font-weight:900;box-shadow:0 4px 12px #0002}
@@ -18,7 +18,7 @@ button{font:inherit}#app{position:fixed;inset:0;overflow:hidden;background:linea
 .brow,.eye,.mouth{position:absolute;transition:.13s}.brow{top:73px;width:45px;height:6px;border-radius:999px;background:#493129}.brow.l{left:32px}.brow.r{right:32px}.eye{top:94px;width:20px;height:10px;border-radius:50%;background:#38251f}.eye.l{left:50px}.eye.r{right:50px}.mouth{left:50%;top:154px;transform:translateX(-50%);width:50px;height:19px;border-bottom:5px solid #a45f56;border-radius:50%}.head.blink .eye{height:2px;top:99px}.head.focus .brow.l{transform:rotate(12deg)}.head.focus .brow.r{transform:rotate(-12deg)}.head.focus .mouth{width:30px;border-bottom-width:3px}.head.happy .eye{height:3px;top:99px}.head.happy .mouth{width:60px;height:27px;border-bottom-width:6px}
 .cape{position:absolute;z-index:2;top:345px;left:50%;transform:translateX(-50%);width:346px;height:260px;padding-top:97px;border-radius:48% 48% 12% 12%;background:linear-gradient(#faf7f1,#ddd8d0);color:#9b7357;text-align:center;font-size:32px;font-weight:900}.cape small{display:block;font-size:10px;letter-spacing:1px}
 canvas{position:absolute;z-index:5;left:50%;top:22px;transform:translateX(-50%);width:390px;height:390px;touch-action:none}#fx{z-index:7;pointer-events:none}
-.scissor{position:absolute;z-index:35;display:none;pointer-events:none;font-size:61px;transform:translate(-50%,-50%);filter:drop-shadow(0 4px 5px #0005);transform-origin:center}.scissor.snip{animation:snip .11s ease-in-out alternate 2}@keyframes snip{from{scale:.92}to{scale:1.08}}
+.scissor{position:absolute;z-index:35;display:none;pointer-events:none;font-size:42px;transform:translate(-50%,-50%);filter:drop-shadow(0 4px 5px #0005);transform-origin:center}.scissor.snip{animation:snip .11s ease-in-out alternate 2}@keyframes snip{from{scale:.92}to{scale:1.08}}
 .bladeGuide{position:absolute;z-index:34;display:none;width:54px;height:2px;background:rgba(154,93,59,.48);pointer-events:none;transform-origin:center}
 .toast{position:absolute;z-index:75;left:50%;top:52%;opacity:0;transform:translate(-50%,-50%) scale(.86);padding:9px 15px;border-radius:999px;background:#44352d;color:#fff;font-weight:900;transition:.13s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .controls{position:absolute;z-index:55;left:7px;right:7px;bottom:max(7px,env(safe-area-inset-bottom));display:grid;grid-template-columns:1.18fr 1.18fr .78fr .78fr .78fr;gap:5px;height:99px;padding:7px;border-radius:22px;background:#fffaf5;box-shadow:0 -3px 16px #0002}.btn{min-width:0;border:2px solid transparent;border-radius:15px;background:#eee8e1;font-size:10px;font-weight:900}.btn b{display:block;font-size:22px}.btn.on{border-color:#ad744a;background:#f4dec5}.reset{background:#45362e;color:#fff}.zoomLabel{position:absolute;z-index:32;right:14px;bottom:14px;padding:6px 9px;border-radius:999px;background:#493a32;color:#fff;font-size:11px;font-weight:900}
@@ -27,7 +27,7 @@ canvas{position:absolute;z-index:5;left:50%;top:22px;transform:translateX(-50%);
 </style>
 </head>
 <body><div id="app">
-<div class="top"><div class="pill">V1.1 雙手精修</div><div class="pill">實際落髮 <span id="piecesCount">0</span></div></div>
+<div class="top"><div class="pill">V1.2 超細修</div><div class="pill">實際落髮 <span id="piecesCount">0</span></div></div>
 <main class="stage" id="stage">
   <section class="note" id="note">剪刀模式｜第一指移動剪刀，第二指喀嚓<small id="hint">第二指點一下＝剪一次；按住＝持續開合。切到「縮放」才會放大，不會誤剪。</small></section>
   <div class="viewport" id="viewport"><div class="world"><div class="person"><div class="head" id="head"><i class="brow l"></i><i class="brow r"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div><canvas id="hair" width="800" height="800"></canvas><canvas id="fx" width="800" height="800"></canvas><div class="cape">ES<small>HAIR SALON</small></div></div></div></div>
@@ -51,22 +51,46 @@ function qpoint(s,t){const u=1-t;return{x:u*u*s.rootX+2*u*t*s.ctrlX+t*t*s.tipX,y
 function drawHair(){X.clearRect(0,0,W,H);X.lineCap='round';for(const s of strands){const g=X.createLinearGradient(s.rootX,s.rootY,s.tipX,s.tipY);g.addColorStop(0,s.shade>.5?'#604034':'#503127');g.addColorStop(1,'#21130f');X.strokeStyle=g;X.lineWidth=s.width;X.beginPath();X.moveTo(s.rootX,s.rootY);X.quadraticCurveTo(s.ctrlX,s.ctrlY,s.tipX,s.tipY);X.stroke()}}
 function reset(){stopAuto();pointers.clear();guideId=triggerId=null;guidePos=guidePrev=null;makeHair();pieces=[];totalPieces=0;$('#piecesCount').textContent='0';drawHair();centerView(1);setMode('cut');face('normal');hideScissor()}
 function setMode(m){mode=m;stopAuto();pointers.clear();guideId=triggerId=null;pinchBase=panBase=null;hideScissor();$('#cutMode').classList.toggle('on',m==='cut');$('#viewMode').classList.toggle('on',m==='view');$('#note').firstChild.nodeValue=m==='cut'?'剪刀模式｜第一指移動剪刀，第二指喀嚓':'縮放移動模式｜這裡完全不會剪';$('#hint').textContent=m==='cut'?'第二指點一下＝剪一次；按住＝持續開合。剪刀方向跟著第一指滑動方向。':'單指拖動畫面；雙指拉開／捏合縮放。完成後切回「雙手剪」。'}
-function showScissor(p){sc.style.display=guide.style.display='block';sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=p.sy+'px';renderAngle()}
+function showScissor(p){sc.style.display=guide.style.display='block';sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=(p.sy-54)+'px';renderAngle()}
 function hideScissor(){sc.style.display=guide.style.display='none'}
 function renderAngle(){const deg=angle*180/Math.PI;sc.style.transform=`translate(-50%,-50%) rotate(${deg-12}deg)`;guide.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`}
 function segDist(px,py,ax,ay,bx,by){const vx=bx-ax,vy=by-ay,wx=px-ax,wy=py-ay,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(px-ax,py-ay);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(px-bx,py-by);const u=c1/c2;return Math.hypot(px-(ax+u*vx),py-(ay+u*vy))}
-function snip(){if(!guidePos)return;const bladeHalf=zoom>=2.4?22:zoom>=1.6?27:32,tol=zoom>=2.4?4.2:5.3;const ux=Math.cos(angle),uy=Math.sin(angle),ax=guidePos.x-ux*bladeHalf,ay=guidePos.y-uy*bladeHalf,bx=guidePos.x+ux*bladeHalf,by=guidePos.y+uy*bladeHalf;let cutN=0,removedTotal=0;
- for(const s of strands){let hit=null,best=1e9;for(let k=5;k<=18;k++){const t=k/18,p=qpoint(s,t),d=segDist(p.x,p.y,ax,ay,bx,by);if(d<best){best=d;hit={t,p}}}if(best>tol||!hit||hit.t<.28||hit.t>.96)continue;
-  const oldTip={x:s.tipX,y:s.tipY},oldCtrl={x:s.ctrlX,y:s.ctrlY},cp=hit.p,removed=Math.hypot(oldTip.x-cp.x,oldTip.y-cp.y);if(removed<3)continue;
-  const prev=qpoint(s,Math.max(.02,hit.t-.055));s.tipX=cp.x;s.tipY=cp.y;s.ctrlX=(prev.x+cp.x)/2;s.ctrlY=(prev.y+cp.y)/2;
-  const drift=removed<25?.35:removed<65?.65:1.0;const sideV=clamp(Math.cos(angle)*drift,-1.2,1.2),upV=clamp(Math.sin(angle)*drift,-.8,.8);
-  pieces.push({x:cp.x,y:cp.y,vx:sideV+rand(-.35,.35),vy:Math.max(.25,upV*.35)+rand(.15,.55),rot:Math.atan2(oldTip.y-cp.y,oldTip.x-cp.x),vr:rand(-.07,.07),len:clamp(removed*.48,5,34),curve:rand(-4,4),a:1});cutN++;removedTotal+=removed;
+function snip(){
+ if(!guidePos)return;
+ const bladeHalf=zoom>=2.4?12:zoom>=1.6?15:18, tol=zoom>=2.4?2.4:3.2;
+ const ux=Math.cos(angle),uy=Math.sin(angle),ax=guidePos.x-ux*bladeHalf,ay=guidePos.y-uy*bladeHalf,bx=guidePos.x+ux*bladeHalf,by=guidePos.y+uy*bladeHalf;
+ const candidates=[];
+ for(const s of strands){
+   let hit=null,best=1e9;
+   for(let k=6;k<=18;k++){
+     const t=k/18,p=qpoint(s,t),d=segDist(p.x,p.y,ax,ay,bx,by);
+     if(d<best){best=d;hit={t,p}}
+   }
+   if(best<=tol&&hit&&hit.t>=.3&&hit.t<=.96)candidates.push({s,hit,best});
  }
- if(cutN){drawHair();totalPieces+=cutN;$('#piecesCount').textContent=totalPieces;sc.classList.remove('snip');void sc.offsetWidth;sc.classList.add('snip');flash(cutN<=3?'細修 ✂️':cutN<=8?'喀嚓 ✂️':'一刀 '+cutN+' 束');face('focus');setTimeout(()=>{if(!autoTimer)face('normal')},160)}
+ candidates.sort((a,b)=>a.best-b.best);
+ const limit=zoom>=2.4?2:zoom>=1.6?3:4;
+ let cutN=0;
+ for(const item of candidates.slice(0,limit)){
+   const s=item.s,cp=item.hit.p,oldTip={x:s.tipX,y:s.tipY};
+   const removed=Math.hypot(oldTip.x-cp.x,oldTip.y-cp.y);
+   if(removed<2)continue;
+   const prev=qpoint(s,Math.max(.02,item.hit.t-.045));
+   s.tipX=cp.x;s.tipY=cp.y;s.ctrlX=(prev.x+cp.x)/2;s.ctrlY=(prev.y+cp.y)/2;
+   const side=Math.cos(angle)*.22, lift=Math.sin(angle)*.12;
+   pieces.push({x:cp.x,y:cp.y,vx:side+rand(-.16,.16),vy:Math.max(.12,lift)+rand(.08,.28),rot:Math.atan2(oldTip.y-cp.y,oldTip.x-cp.x),vr:rand(-.04,.04),len:clamp(removed*.28,3,16),curve:rand(-2,2),a:1});
+   cutN++;
+ }
+ if(cutN){
+   drawHair();totalPieces+=cutN;$('#piecesCount').textContent=totalPieces;
+   sc.classList.remove('snip');void sc.offsetWidth;sc.classList.add('snip');
+   flash(cutN===1?'精修 1 束 ✂️':'精修 '+cutN+' 束 ✂️');
+   face('focus');setTimeout(()=>{if(!autoTimer)face('normal')},140)
+ }
 }
 function startAuto(){if(autoTimer)return;snip();autoTimer=setInterval(snip,145)} function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null}sc.classList.remove('snip')}
 function downCut(e){const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);try{stage.setPointerCapture(e.pointerId)}catch{};if(guideId===null){guideId=e.pointerId;guidePos=guidePrev=p;showScissor(p);face('focus')}else if(triggerId===null&&e.pointerId!==guideId){triggerId=e.pointerId;startAuto()}e.preventDefault()}
-function moveCut(e){if(!pointers.has(e.pointerId))return;const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);if(e.pointerId===guideId){guidePrev=guidePos;guidePos=p;sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=p.sy+'px';const dx=guidePos.x-guidePrev.x,dy=guidePos.y-guidePrev.y;if(Math.hypot(dx,dy)>1.2)angle=Math.atan2(dy,dx);renderAngle()}e.preventDefault()}
+function moveCut(e){if(!pointers.has(e.pointerId))return;const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);if(e.pointerId===guideId){guidePrev=guidePos;guidePos=p;sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=(p.sy-54)+'px';const dx=guidePos.x-guidePrev.x,dy=guidePos.y-guidePrev.y;if(Math.hypot(dx,dy)>1.2)angle=Math.atan2(dy,dx);renderAngle()}e.preventDefault()}
 function upCut(e){pointers.delete(e.pointerId);if(e.pointerId===triggerId){triggerId=null;stopAuto()}if(e.pointerId===guideId){guideId=null;guidePos=guidePrev=null;hideScissor();face('normal');if(triggerId!==null){triggerId=null;stopAuto()}}try{if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId)}catch{}}
 function rebuildViewGesture(){const vals=[...pointers.values()];if(vals.length===1){const p=vals[0];panBase={sx:p.sx,sy:p.sy,tx,ty};pinchBase=null}else if(vals.length>=2){const a=vals[0],b=vals[1],dist=Math.hypot(b.sx-a.sx,b.sy-a.sy),mx=(a.sx+b.sx)/2,my=(a.sy+b.sy)/2;pinchBase={dist,zoom,mx,my,wx:(mx-tx)/zoom,wy:(my-ty)/zoom};panBase=null}}
 function downView(e){const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);try{stage.setPointerCapture(e.pointerId)}catch{};rebuildViewGesture();e.preventDefault()}
@@ -75,6 +99,7 @@ function upView(e){pointers.delete(e.pointerId);rebuildViewGesture();try{if(stag
 stage.addEventListener('pointerdown',e=>mode==='cut'?downCut(e):downView(e),{passive:false});stage.addEventListener('pointermove',e=>mode==='cut'?moveCut(e):moveView(e),{passive:false});stage.addEventListener('pointerup',e=>mode==='cut'?upCut(e):upView(e));stage.addEventListener('pointercancel',e=>mode==='cut'?upCut(e):upView(e));
 $('#cutMode').onclick=()=>setMode('cut');$('#viewMode').onclick=()=>setMode('view');$('#zoomOut').onclick=()=>{zoom=clamp(zoom-.4,1,4);applyView()};$('#zoomReset').onclick=()=>centerView(1);$('#reset').onclick=reset;
 setInterval(()=>{if(guideId===null&&mode==='cut'){head.classList.add('blink');setTimeout(()=>head.classList.remove('blink'),120)}},3200);
-function anim(){FX.clearRect(0,0,W,H);pieces=pieces.filter(p=>p.a>.025&&p.y<H+40);for(const p of pieces){p.x+=p.vx;p.y+=p.vy;p.vy+=.075;p.vx*=.992;p.rot+=p.vr;p.a*=.973;FX.save();FX.globalAlpha=p.a;FX.translate(p.x,p.y);FX.rotate(p.rot);FX.strokeStyle='#2b1914';FX.lineWidth=2.1;FX.beginPath();FX.moveTo(-p.len/2,0);FX.quadraticCurveTo(0,p.curve,p.len/2,0);FX.stroke();FX.restore()}FX.globalAlpha=1;requestAnimationFrame(anim)}anim();reset();
+function anim(){FX.clearRect(0,0,W,H);pieces=pieces.filter(p=>p.a>.025&&p.y<H+40);for(const p of pieces){p.x+=p.vx;p.y+=p.vy;p.vy+=.045;p.vx*=.992;p.rot+=p.vr;p.a*=.968;FX.save();FX.globalAlpha=p.a;FX.translate(p.x,p.y);FX.rotate(p.rot);FX.strokeStyle='#2b1914';FX.lineWidth=1.35;FX.beginPath();FX.moveTo(-p.len/2,0);FX.quadraticCurveTo(0,p.curve,p.len/2,0);FX.stroke();FX.restore()}FX.globalAlpha=1;requestAnimationFrame(anim)}anim();reset();
 })();
 </script></body></html>
+<script>document.addEventListener('contextmenu',e=>e.preventDefault(),{capture:true});document.addEventListener('selectstart',e=>e.preventDefault(),{capture:true});document.addEventListener('dragstart',e=>e.preventDefault(),{capture:true});</script>

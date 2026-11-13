@@ -1,70 +1,80 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><title>剪髮快手 V0.9 剪刀物理核心</title><style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#281b16;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;touch-action:none}button{font:inherit}#app{position:fixed;inset:0;background:linear-gradient(#2c1d17 0 7%,#ead8c6 7%);overflow:hidden}.top{position:absolute;z-index:30;top:max(10px,env(safe-area-inset-top));left:12px;right:12px;display:flex;justify-content:space-between}.pill{border:0;border-radius:999px;padding:9px 13px;background:#45362e;color:#fff;font-weight:900;font-size:13px}.stage{position:absolute;top:64px;bottom:108px;left:10px;right:10px;border:7px solid #7a5843;border-radius:30px;background:radial-gradient(circle at 50% 12%,#fffaf3,#e8d1ba 64%,#cfad90);overflow:hidden;touch-action:none}.note{position:absolute;z-index:15;top:13px;left:7%;right:7%;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.96);box-shadow:0 6px 18px #0002;text-align:center;font-weight:900}.note small{display:block;margin-top:3px;color:#79675a;font-size:11px}.person{position:absolute;left:50%;top:96px;transform:translateX(-50%);width:320px;height:520px}.head{position:absolute;z-index:3;left:50%;top:115px;transform:translateX(-50%);width:178px;height:205px;border:2px solid #bf8e70;border-radius:48% 48% 52% 52%;background:#efc09e}.eye,.brow,.mouth{position:absolute;transition:.14s}.brow{top:64px;width:39px;height:5px;border-radius:999px;background:#493129}.brow.l{left:28px}.brow.r{right:28px}.eye{top:82px;width:18px;height:9px;border-radius:50%;background:#38251f}.eye.l{left:44px}.eye.r{right:44px}.mouth{left:50%;top:136px;transform:translateX(-50%);width:45px;height:18px;border-bottom:5px solid #a45f56;border-radius:50%}.head.blink .eye{height:2px;top:86px}.head.focus .brow.l{transform:rotate(12deg)}.head.focus .brow.r{transform:rotate(-12deg)}.head.focus .mouth{width:29px;border-bottom-width:3px}.head.worry .brow.l{transform:rotate(20deg)}.head.worry .brow.r{transform:rotate(-20deg)}.head.worry .mouth{width:24px;height:15px;border-bottom:0;border-top:4px solid #a45f56}.head.happy .eye{height:3px;top:86px}.head.happy .mouth{width:54px;height:24px;border-bottom-width:6px}.cape{position:absolute;z-index:2;top:300px;left:50%;transform:translateX(-50%);width:296px;height:220px;padding-top:82px;border-radius:48% 48% 12% 12%;background:linear-gradient(#faf7f1,#ddd8d0);color:#9b7357;text-align:center;font-size:28px;font-weight:900}.cape small{display:block;font-size:9px}canvas{position:absolute;z-index:6;left:50%;top:40px;transform:translateX(-50%);width:292px;height:292px;touch-action:none}#fx{z-index:7;pointer-events:none}.scissor{position:absolute;z-index:20;display:none;pointer-events:none;font-size:54px;transform:translate(-50%,-50%) rotate(-15deg);filter:drop-shadow(0 4px 5px #0005)}.scissor.snip{animation:snip .15s steps(2,end) infinite}@keyframes snip{0%{transform:translate(-50%,-50%) rotate(-28deg) scale(.92)}100%{transform:translate(-50%,-50%) rotate(7deg) scale(1.06)}}.bottom{position:absolute;z-index:40;left:10px;right:10px;bottom:max(8px,env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:8px;height:88px}.mode,.reset{border:0;border-radius:20px;font-weight:900}.mode{background:#fffaf5}.mode strong{display:block;font-size:25px}.mode.on{outline:3px solid #ad744a;background:#f5dec5}.reset{background:#45362e;color:#fff}.toast{position:absolute;z-index:80;left:50%;top:51%;opacity:0;transform:translate(-50%,-50%) scale(.86);padding:9px 16px;border-radius:999px;background:#44352d;color:#fff;font-weight:900;transition:.14s}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}.legend{position:absolute;z-index:18;left:15px;right:15px;bottom:12px;text-align:center;color:#6f5d51;font-size:11px}.legend b{color:#3f312a}.done{position:absolute;z-index:90;inset:24% 8%;display:none;align-items:center;justify-content:center;border-radius:28px;background:#fffaf5;text-align:center;padding:22px;box-shadow:0 20px 50px #0004}.done.show{display:flex}.done button{border:0;border-radius:16px;background:#45362e;color:#fff;padding:12px 18px;font-weight:900}</style></head><body><div id="app">
-<div class="top"><div class="pill">剪刀物理核心</div><div class="pill">✂️ <span id="cuts">0</span></div></div>
-<main class="stage" id="stage"><div class="note">只測「剪」<small id="hint">橫著滑＝平剪；直著滑＝點剪碎化；斜著滑＝斜線輪廓。</small></div><div class="person"><div class="head" id="head"><i class="brow l"></i><i class="brow r"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div><canvas id="hair" width="640" height="640"></canvas><canvas id="fx" width="640" height="640"></canvas><div class="cape">ES<small>HAIR SALON</small></div></div><div class="scissor" id="scissor">✂️</div><div class="toast" id="toast">喀嚓</div><div class="legend"><b>技巧：</b>慢慢拖會比較細；快速一刀會比較俐落。</div></main>
-<div class="bottom"><button class="mode on" id="scissors"><strong>✂️</strong>自由剪</button><button class="reset" id="reset">↻ 重來</button></div>
-<section class="done" id="done"><div><div style="font-size:42px">✨✂️✨</div><h2>剪刀手感測試完成</h2><p>這版只看「剪」本身的感覺。</p><button id="again">再剪一次</button></div></section>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#2b1d17">
+<title>剪髮快手 V1.1 雙手精修核心</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior:none;background:#281b16;font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif;touch-action:none}
+button{font:inherit}#app{position:fixed;inset:0;overflow:hidden;background:linear-gradient(#2b1d17 0 7%,#ead8c6 7%)}
+.top{position:absolute;z-index:50;top:max(10px,env(safe-area-inset-top));left:10px;right:10px;display:flex;justify-content:space-between;gap:7px}.pill{border:0;border-radius:999px;padding:8px 11px;background:#46372f;color:#fff;font-size:12px;font-weight:900;box-shadow:0 4px 12px #0002}
+.stage{position:absolute;left:8px;right:8px;top:62px;bottom:117px;overflow:hidden;border:7px solid #795741;border-radius:30px;background:radial-gradient(circle at 50% 10%,#fffaf3,#e6ceb5 62%,#cfac8f);touch-action:none}
+.note{position:absolute;z-index:30;top:10px;left:5%;right:5%;padding:9px 11px;border-radius:17px;background:rgba(255,255,255,.96);text-align:center;font-weight:900;box-shadow:0 7px 18px #0002}.note small{display:block;margin-top:3px;color:#78675b;font-size:11px;line-height:1.3}
+.viewport{position:absolute;inset:0;transform-origin:0 0;touch-action:none}.world{position:absolute;left:0;top:0;width:800px;height:800px}
+.person{position:absolute;left:50%;top:54px;transform:translateX(-50%);width:440px;height:670px}.head{position:absolute;z-index:3;left:50%;top:125px;transform:translateX(-50%);width:208px;height:234px;border:2px solid #be8c6d;border-radius:48% 48% 52% 52%;background:#efc09e}
+.brow,.eye,.mouth{position:absolute;transition:.13s}.brow{top:73px;width:45px;height:6px;border-radius:999px;background:#493129}.brow.l{left:32px}.brow.r{right:32px}.eye{top:94px;width:20px;height:10px;border-radius:50%;background:#38251f}.eye.l{left:50px}.eye.r{right:50px}.mouth{left:50%;top:154px;transform:translateX(-50%);width:50px;height:19px;border-bottom:5px solid #a45f56;border-radius:50%}.head.blink .eye{height:2px;top:99px}.head.focus .brow.l{transform:rotate(12deg)}.head.focus .brow.r{transform:rotate(-12deg)}.head.focus .mouth{width:30px;border-bottom-width:3px}.head.happy .eye{height:3px;top:99px}.head.happy .mouth{width:60px;height:27px;border-bottom-width:6px}
+.cape{position:absolute;z-index:2;top:345px;left:50%;transform:translateX(-50%);width:346px;height:260px;padding-top:97px;border-radius:48% 48% 12% 12%;background:linear-gradient(#faf7f1,#ddd8d0);color:#9b7357;text-align:center;font-size:32px;font-weight:900}.cape small{display:block;font-size:10px;letter-spacing:1px}
+canvas{position:absolute;z-index:5;left:50%;top:22px;transform:translateX(-50%);width:390px;height:390px;touch-action:none}#fx{z-index:7;pointer-events:none}
+.scissor{position:absolute;z-index:35;display:none;pointer-events:none;font-size:61px;transform:translate(-50%,-50%);filter:drop-shadow(0 4px 5px #0005);transform-origin:center}.scissor.snip{animation:snip .11s ease-in-out alternate 2}@keyframes snip{from{scale:.92}to{scale:1.08}}
+.bladeGuide{position:absolute;z-index:34;display:none;width:54px;height:2px;background:rgba(154,93,59,.48);pointer-events:none;transform-origin:center}
+.toast{position:absolute;z-index:75;left:50%;top:52%;opacity:0;transform:translate(-50%,-50%) scale(.86);padding:9px 15px;border-radius:999px;background:#44352d;color:#fff;font-weight:900;transition:.13s;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.controls{position:absolute;z-index:55;left:7px;right:7px;bottom:max(7px,env(safe-area-inset-bottom));display:grid;grid-template-columns:1.18fr 1.18fr .78fr .78fr .78fr;gap:5px;height:99px;padding:7px;border-radius:22px;background:#fffaf5;box-shadow:0 -3px 16px #0002}.btn{min-width:0;border:2px solid transparent;border-radius:15px;background:#eee8e1;font-size:10px;font-weight:900}.btn b{display:block;font-size:22px}.btn.on{border-color:#ad744a;background:#f4dec5}.reset{background:#45362e;color:#fff}.zoomLabel{position:absolute;z-index:32;right:14px;bottom:14px;padding:6px 9px;border-radius:999px;background:#493a32;color:#fff;font-size:11px;font-weight:900}
+.help{position:absolute;z-index:80;left:10px;right:10px;bottom:119px;display:none;padding:10px 13px;border-radius:18px;background:#fffaf5;box-shadow:0 8px 24px #0003;font-size:12px;line-height:1.5}.help.show{display:block}
+@media(max-height:720px){.person{top:18px;transform:translateX(-50%) scale(.9);transform-origin:top center}.controls{height:89px}.btn b{font-size:19px}}
+</style>
+</head>
+<body><div id="app">
+<div class="top"><div class="pill">V1.1 雙手精修</div><div class="pill">實際落髮 <span id="piecesCount">0</span></div></div>
+<main class="stage" id="stage">
+  <section class="note" id="note">剪刀模式｜第一指移動剪刀，第二指喀嚓<small id="hint">第二指點一下＝剪一次；按住＝持續開合。切到「縮放」才會放大，不會誤剪。</small></section>
+  <div class="viewport" id="viewport"><div class="world"><div class="person"><div class="head" id="head"><i class="brow l"></i><i class="brow r"></i><i class="eye l"></i><i class="eye r"></i><i class="mouth"></i></div><canvas id="hair" width="800" height="800"></canvas><canvas id="fx" width="800" height="800"></canvas><div class="cape">ES<small>HAIR SALON</small></div></div></div></div>
+  <div class="bladeGuide" id="bladeGuide"></div><div class="scissor" id="scissor">✂️</div><div class="toast" id="toast">喀嚓</div><div class="zoomLabel" id="zoomLabel">1.0×</div>
+</main>
+<nav class="controls"><button class="btn on" id="cutMode"><b>✂️</b>雙手剪</button><button class="btn" id="viewMode"><b>🔍</b>縮放移動</button><button class="btn" id="zoomOut"><b>－</b>縮小</button><button class="btn" id="zoomReset"><b>1×</b>正常</button><button class="btn reset" id="reset"><b>↻</b>重來</button></nav>
+<div class="help" id="help"></div>
 </div><script>
 (()=>{
-const $=s=>document.querySelector(s),stage=$('#stage'),C=$('#hair'),X=C.getContext('2d'),F=$('#fx'),FX=F.getContext('2d'),head=$('#head'),sc=$('#scissor');
-let strands=[],pieces=[],drag=false,last=null,cuts=0,blinkTimer=0;
-const W=640,H=640;
-function rand(a,b){return a+Math.random()*(b-a)}
-function makeHair(){
- strands=[];
- for(let i=0;i<185;i++){
-   const t=i/184,ang=Math.PI*(.93+1.14*t),rx=225,ry=185;
-   const rootX=320+Math.cos(ang)*92,rootY=225+Math.sin(ang)*68;
-   let len=rand(125,225)*(1-.15*Math.abs(t-.5));
-   const spread=(t-.5)*160;
-   const tipX=320+spread+rand(-24,24),tipY=150+len+Math.abs(t-.5)*72+rand(-18,18);
-   const ctrlX=(rootX+tipX)/2+rand(-24,24),ctrlY=(rootY+tipY)/2-rand(12,38);
-   strands.push({rootX,rootY,tipX,tipY,ctrlX,ctrlY,cut:false,width:rand(3.1,5.4),shade:Math.random()});
- }
-}
-function drawHair(){
- X.clearRect(0,0,W,H);X.lineCap='round';
- for(const s of strands){
-   const grd=X.createLinearGradient(s.rootX,s.rootY,s.tipX,s.tipY);
-   grd.addColorStop(0,s.shade>.5?'#604034':'#513228');grd.addColorStop(1,'#20120f');
-   X.strokeStyle=grd;X.lineWidth=s.width;X.beginPath();X.moveTo(s.rootX,s.rootY);X.quadraticCurveTo(s.ctrlX,s.ctrlY,s.tipX,s.tipY);X.stroke();
- }
-}
-function reset(){makeHair();pieces=[];cuts=0;$('#cuts').textContent='0';$('#done').classList.remove('show');$('#hint').textContent='橫著滑＝平剪；直著滑＝點剪碎化；斜著滑＝斜線輪廓。';face('normal');drawHair()}
+const $=s=>document.querySelector(s),stage=$('#stage'),viewport=$('#viewport'),C=$('#hair'),X=C.getContext('2d'),F=$('#fx'),FX=F.getContext('2d'),head=$('#head'),sc=$('#scissor'),guide=$('#bladeGuide');
+const W=800,H=800,HAIR_CENTER={x:400,y:290};
+let strands=[],pieces=[],mode='cut',zoom=1,tx=0,ty=0,pointers=new Map(),guideId=null,triggerId=null,guidePos=null,guidePrev=null,angle=0,autoTimer=null,pinchBase=null,panBase=null,totalPieces=0;
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))} function rand(a,b){return a+Math.random()*(b-a)}
+function applyView(){viewport.style.transform=`translate(${tx}px,${ty}px) scale(${zoom})`;$('#zoomLabel').textContent=zoom.toFixed(1)+'×'}
+function centerView(z=1){const r=stage.getBoundingClientRect();zoom=z;tx=(r.width-W*z)/2;ty=(r.height-H*z)/2+10;applyView()}
+function toWorld(cx,cy){const r=stage.getBoundingClientRect();const sx=cx-r.left,sy=cy-r.top;return{x:(sx-tx)/zoom,y:(sy-ty)/zoom,sx,sy}}
 function face(m){head.className='head'+(m==='normal'?'':' '+m)}
-function point(e){const r=C.getBoundingClientRect(),sr=stage.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height,sx:e.clientX-sr.left,sy:e.clientY-sr.top}}
-function distPointSegment(px,py,ax,ay,bx,by){const vx=bx-ax,vy=by-ay,wx=px-ax,wy=py-ay,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(px-ax,py-ay);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(px-bx,py-by);const u=c1/c2;return Math.hypot(px-(ax+u*vx),py-(ay+u*vy))}
-function snip(a,b){
- const dx=b.x-a.x,dy=b.y-a.y,vertical=Math.abs(dy)>Math.abs(dx)*1.2,horizontal=Math.abs(dx)>Math.abs(dy)*1.2;
- let did=0;
- for(const s of strands){
-   const d=distPointSegment(s.tipX,s.tipY,a.x,a.y,b.x,b.y);
-   const shaftD=distPointSegment((s.ctrlX+s.tipX)/2,(s.ctrlY+s.tipY)/2,a.x,a.y,b.x,b.y);
-   if(Math.min(d,shaftD)<(vertical?30:24)){
-     const oldX=s.tipX,oldY=s.tipY;
-     if(vertical){
-       const shorten=rand(10,32);
-       const vx=s.tipX-s.rootX,vy=s.tipY-s.rootY,L=Math.max(1,Math.hypot(vx,vy)),nl=Math.max(55,L-shorten);
-       s.tipX=s.rootX+vx/L*nl+rand(-6,6);s.tipY=s.rootY+vy/L*nl+rand(-3,8);
-     }else{
-       const vx=b.x-a.x,vy=b.y-a.y,den=vx*vx+vy*vy||1,u=((s.tipX-a.x)*vx+(s.tipY-a.y)*vy)/den;
-       const cx=a.x+u*vx,cy=a.y+u*vy;
-       s.tipX=s.tipX*.25+cx*.75;s.tipY=s.tipY*.25+cy*.75+(horizontal?rand(-2,2):rand(-5,5));
-     }
-     s.ctrlX=(s.rootX+s.tipX)/2+rand(-18,18);s.ctrlY=(s.rootY+s.tipY)/2-rand(8,26);
-     pieces.push({x:oldX,y:oldY,vx:rand(-1.8,1.8),vy:rand(.8,2.2),rot:rand(0,6.28),vr:rand(-.18,.18),len:rand(10,28),a:1});
-     did++;
-   }
+function flash(t){const z=$('#toast');z.textContent=t;z.classList.add('show');setTimeout(()=>z.classList.remove('show'),230)}
+function makeHair(){strands=[];for(let i=0;i<330;i++){const t=i/329,ang=Math.PI*(.91+1.18*t),rootX=400+Math.cos(ang)*118,rootY=286+Math.sin(ang)*87,len=rand(165,285)*(1-.10*Math.abs(t-.5)),spread=(t-.5)*200,tipX=400+spread+rand(-15,15),tipY=190+len+Math.abs(t-.5)*90+rand(-13,13),ctrlX=(rootX+tipX)/2+rand(-15,15),ctrlY=(rootY+tipY)/2-rand(10,26);strands.push({rootX,rootY,ctrlX,ctrlY,tipX,tipY,width:rand(1.8,3.8),shade:Math.random()})}}
+function qpoint(s,t){const u=1-t;return{x:u*u*s.rootX+2*u*t*s.ctrlX+t*t*s.tipX,y:u*u*s.rootY+2*u*t*s.ctrlY+t*t*s.tipY}}
+function drawHair(){X.clearRect(0,0,W,H);X.lineCap='round';for(const s of strands){const g=X.createLinearGradient(s.rootX,s.rootY,s.tipX,s.tipY);g.addColorStop(0,s.shade>.5?'#604034':'#503127');g.addColorStop(1,'#21130f');X.strokeStyle=g;X.lineWidth=s.width;X.beginPath();X.moveTo(s.rootX,s.rootY);X.quadraticCurveTo(s.ctrlX,s.ctrlY,s.tipX,s.tipY);X.stroke()}}
+function reset(){stopAuto();pointers.clear();guideId=triggerId=null;guidePos=guidePrev=null;makeHair();pieces=[];totalPieces=0;$('#piecesCount').textContent='0';drawHair();centerView(1);setMode('cut');face('normal');hideScissor()}
+function setMode(m){mode=m;stopAuto();pointers.clear();guideId=triggerId=null;pinchBase=panBase=null;hideScissor();$('#cutMode').classList.toggle('on',m==='cut');$('#viewMode').classList.toggle('on',m==='view');$('#note').firstChild.nodeValue=m==='cut'?'剪刀模式｜第一指移動剪刀，第二指喀嚓':'縮放移動模式｜這裡完全不會剪';$('#hint').textContent=m==='cut'?'第二指點一下＝剪一次；按住＝持續開合。剪刀方向跟著第一指滑動方向。':'單指拖動畫面；雙指拉開／捏合縮放。完成後切回「雙手剪」。'}
+function showScissor(p){sc.style.display=guide.style.display='block';sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=p.sy+'px';renderAngle()}
+function hideScissor(){sc.style.display=guide.style.display='none'}
+function renderAngle(){const deg=angle*180/Math.PI;sc.style.transform=`translate(-50%,-50%) rotate(${deg-12}deg)`;guide.style.transform=`translate(-50%,-50%) rotate(${deg}deg)`}
+function segDist(px,py,ax,ay,bx,by){const vx=bx-ax,vy=by-ay,wx=px-ax,wy=py-ay,c1=vx*wx+vy*wy;if(c1<=0)return Math.hypot(px-ax,py-ay);const c2=vx*vx+vy*vy;if(c2<=c1)return Math.hypot(px-bx,py-by);const u=c1/c2;return Math.hypot(px-(ax+u*vx),py-(ay+u*vy))}
+function snip(){if(!guidePos)return;const bladeHalf=zoom>=2.4?22:zoom>=1.6?27:32,tol=zoom>=2.4?4.2:5.3;const ux=Math.cos(angle),uy=Math.sin(angle),ax=guidePos.x-ux*bladeHalf,ay=guidePos.y-uy*bladeHalf,bx=guidePos.x+ux*bladeHalf,by=guidePos.y+uy*bladeHalf;let cutN=0,removedTotal=0;
+ for(const s of strands){let hit=null,best=1e9;for(let k=5;k<=18;k++){const t=k/18,p=qpoint(s,t),d=segDist(p.x,p.y,ax,ay,bx,by);if(d<best){best=d;hit={t,p}}}if(best>tol||!hit||hit.t<.28||hit.t>.96)continue;
+  const oldTip={x:s.tipX,y:s.tipY},oldCtrl={x:s.ctrlX,y:s.ctrlY},cp=hit.p,removed=Math.hypot(oldTip.x-cp.x,oldTip.y-cp.y);if(removed<3)continue;
+  const prev=qpoint(s,Math.max(.02,hit.t-.055));s.tipX=cp.x;s.tipY=cp.y;s.ctrlX=(prev.x+cp.x)/2;s.ctrlY=(prev.y+cp.y)/2;
+  const drift=removed<25?.35:removed<65?.65:1.0;const sideV=clamp(Math.cos(angle)*drift,-1.2,1.2),upV=clamp(Math.sin(angle)*drift,-.8,.8);
+  pieces.push({x:cp.x,y:cp.y,vx:sideV+rand(-.35,.35),vy:Math.max(.25,upV*.35)+rand(.15,.55),rot:Math.atan2(oldTip.y-cp.y,oldTip.x-cp.x),vr:rand(-.07,.07),len:clamp(removed*.48,5,34),curve:rand(-4,4),a:1});cutN++;removedTotal+=removed;
  }
- if(did){cuts+=did;$('#cuts').textContent=cuts;drawHair();flash(vertical?'點剪 ✂︎':horizontal?'平剪 ✂️':'斜剪 ✂️');face('focus');if(cuts>38){face('happy');$('#hint').textContent='已經剪出明顯輪廓了。你可以繼續修細節。'}}
+ if(cutN){drawHair();totalPieces+=cutN;$('#piecesCount').textContent=totalPieces;sc.classList.remove('snip');void sc.offsetWidth;sc.classList.add('snip');flash(cutN<=3?'細修 ✂️':cutN<=8?'喀嚓 ✂️':'一刀 '+cutN+' 束');face('focus');setTimeout(()=>{if(!autoTimer)face('normal')},160)}
 }
-function flash(t){const z=$('#toast');z.textContent=t;z.classList.add('show');setTimeout(()=>z.classList.remove('show'),260)}
-function down(e){const p=point(e);drag=true;last=p;sc.style.display='block';sc.style.left=p.sx+'px';sc.style.top=p.sy+'px';sc.classList.add('snip');face('focus');try{stage.setPointerCapture(e.pointerId)}catch{}e.preventDefault()}
-function move(e){if(!drag)return;const p=point(e);sc.style.left=p.sx+'px';sc.style.top=p.sy+'px';const ang=Math.atan2(p.y-last.y,p.x-last.x)*180/Math.PI;sc.style.transform='translate(-50%,-50%) rotate('+(ang-15)+'deg)';if(Math.hypot(p.x-last.x,p.y-last.y)>8){snip(last,p);last=p}e.preventDefault()}
-function up(){if(!drag)return;drag=false;sc.style.display='none';sc.classList.remove('snip');face('normal')}
-stage.addEventListener('pointerdown',down,{passive:false});stage.addEventListener('pointermove',move,{passive:false});stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
-$('#reset').onclick=reset;$('#again').onclick=reset;
-setInterval(()=>{if(!drag){head.classList.add('blink');setTimeout(()=>head.classList.remove('blink'),120)}},3200);
-function anim(){FX.clearRect(0,0,W,H);pieces=pieces.filter(p=>p.a>.02&&p.y<H+30);for(const p of pieces){p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.rot+=p.vr;p.a*=.968;FX.save();FX.globalAlpha=p.a;FX.translate(p.x,p.y);FX.rotate(p.rot);FX.strokeStyle='#2b1914';FX.lineWidth=3;FX.beginPath();FX.moveTo(-p.len/2,0);FX.quadraticCurveTo(0,4,p.len/2,0);FX.stroke();FX.restore()}requestAnimationFrame(anim)}anim();reset();
+function startAuto(){if(autoTimer)return;snip();autoTimer=setInterval(snip,145)} function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null}sc.classList.remove('snip')}
+function downCut(e){const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);try{stage.setPointerCapture(e.pointerId)}catch{};if(guideId===null){guideId=e.pointerId;guidePos=guidePrev=p;showScissor(p);face('focus')}else if(triggerId===null&&e.pointerId!==guideId){triggerId=e.pointerId;startAuto()}e.preventDefault()}
+function moveCut(e){if(!pointers.has(e.pointerId))return;const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);if(e.pointerId===guideId){guidePrev=guidePos;guidePos=p;sc.style.left=guide.style.left=p.sx+'px';sc.style.top=guide.style.top=p.sy+'px';const dx=guidePos.x-guidePrev.x,dy=guidePos.y-guidePrev.y;if(Math.hypot(dx,dy)>1.2)angle=Math.atan2(dy,dx);renderAngle()}e.preventDefault()}
+function upCut(e){pointers.delete(e.pointerId);if(e.pointerId===triggerId){triggerId=null;stopAuto()}if(e.pointerId===guideId){guideId=null;guidePos=guidePrev=null;hideScissor();face('normal');if(triggerId!==null){triggerId=null;stopAuto()}}try{if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId)}catch{}}
+function rebuildViewGesture(){const vals=[...pointers.values()];if(vals.length===1){const p=vals[0];panBase={sx:p.sx,sy:p.sy,tx,ty};pinchBase=null}else if(vals.length>=2){const a=vals[0],b=vals[1],dist=Math.hypot(b.sx-a.sx,b.sy-a.sy),mx=(a.sx+b.sx)/2,my=(a.sy+b.sy)/2;pinchBase={dist,zoom,mx,my,wx:(mx-tx)/zoom,wy:(my-ty)/zoom};panBase=null}}
+function downView(e){const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);try{stage.setPointerCapture(e.pointerId)}catch{};rebuildViewGesture();e.preventDefault()}
+function moveView(e){if(!pointers.has(e.pointerId))return;const p=toWorld(e.clientX,e.clientY);pointers.set(e.pointerId,p);const vals=[...pointers.values()];if(vals.length===1&&panBase){tx=panBase.tx+(p.sx-panBase.sx);ty=panBase.ty+(p.sy-panBase.sy);applyView()}else if(vals.length>=2&&pinchBase){const a=vals[0],b=vals[1],dist=Math.hypot(b.sx-a.sx,b.sy-a.sy),mx=(a.sx+b.sx)/2,my=(a.sy+b.sy)/2;zoom=clamp(pinchBase.zoom*(dist/pinchBase.dist),1,4);tx=mx-pinchBase.wx*zoom;ty=my-pinchBase.wy*zoom;applyView()}e.preventDefault()}
+function upView(e){pointers.delete(e.pointerId);rebuildViewGesture();try{if(stage.hasPointerCapture(e.pointerId))stage.releasePointerCapture(e.pointerId)}catch{}}
+stage.addEventListener('pointerdown',e=>mode==='cut'?downCut(e):downView(e),{passive:false});stage.addEventListener('pointermove',e=>mode==='cut'?moveCut(e):moveView(e),{passive:false});stage.addEventListener('pointerup',e=>mode==='cut'?upCut(e):upView(e));stage.addEventListener('pointercancel',e=>mode==='cut'?upCut(e):upView(e));
+$('#cutMode').onclick=()=>setMode('cut');$('#viewMode').onclick=()=>setMode('view');$('#zoomOut').onclick=()=>{zoom=clamp(zoom-.4,1,4);applyView()};$('#zoomReset').onclick=()=>centerView(1);$('#reset').onclick=reset;
+setInterval(()=>{if(guideId===null&&mode==='cut'){head.classList.add('blink');setTimeout(()=>head.classList.remove('blink'),120)}},3200);
+function anim(){FX.clearRect(0,0,W,H);pieces=pieces.filter(p=>p.a>.025&&p.y<H+40);for(const p of pieces){p.x+=p.vx;p.y+=p.vy;p.vy+=.075;p.vx*=.992;p.rot+=p.vr;p.a*=.973;FX.save();FX.globalAlpha=p.a;FX.translate(p.x,p.y);FX.rotate(p.rot);FX.strokeStyle='#2b1914';FX.lineWidth=2.1;FX.beginPath();FX.moveTo(-p.len/2,0);FX.quadraticCurveTo(0,p.curve,p.len/2,0);FX.stroke();FX.restore()}FX.globalAlpha=1;requestAnimationFrame(anim)}anim();reset();
 })();
 </script></body></html>
